@@ -1,0 +1,61 @@
+<%= form_for(@batch) do |f| %>
+  <% if @batch.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@batch.errors.count, "error") %> prohibited this batch from being saved:</h2>
+
+      <ul>
+      <% @batch.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :due_date %><br />
+    <%= f.date_select :due_date %>
+  </div>
+  <div class="field">
+    <%= f.label :description %><br />
+    <%= f.text_field :description %>
+  </div>
+  <div class="field">
+    <%= f.label :order_date %><br />
+    <%= f.date_select :order_date %>
+  </div>
+  <div class="field">
+    <%= f.label :arrival_date %><br />
+    <%= f.date_select :arrival_date %>
+  </div>
+
+
+    <div>
+      <%= f.fields_for :product do |prod_form| %>
+
+          <%= prod_form.fields_for :quantity do |qty_form|%>
+              <% Product.all.each do |prod| %>
+
+                  <%= check_box_tag :product_ids, prod.id, @batch.products.include?(prod), :name => 'batch[product_ids][]' %>
+                  <%= label_tag :product_ids, prod %>
+                  <%= prod_form.text_field :quantity %>
+              <% end %>
+          <% end %>
+      <% end %>
+    </div>
+
+
+
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+    <% end %>
+
+  <h2>-----------------------------</h2>
+  <h2>Products Included in This Batch</h2>
+
+
+

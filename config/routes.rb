@@ -1,4 +1,9 @@
 LochStockSpock::Application.routes.draw do
+  resources :products
+  resources :batches
+  resources :quantities
+
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

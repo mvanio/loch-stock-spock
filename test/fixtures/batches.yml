@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  name: MyString
+  due_date: 2015-04-14
+  description: MyString
+  order_date: 2015-04-14
+  arrival_date: 2015-04-14
+
+two:
+  name: MyString
+  due_date: 2015-04-14
+  description: MyString
+  order_date: 2015-04-14
+  arrival_date: 2015-04-14

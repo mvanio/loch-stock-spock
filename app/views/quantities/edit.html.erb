@@ -1,0 +1,18 @@
+<h2>Edit Product Quantities (Batch:<%= @batch.name %>)</h2>
+
+<%= form_for(:quantity) do |f| %>
+
+    <% @q.each do |p| %>
+        <%= p.product %>
+
+        <div class="field">
+          <%= f.label :quantity %><br />
+          <%= f.text_field :quantity %>
+        </div>
+
+    <% end %>
+
+    <div class="actions">
+      <%= f.submit "Add Quantities" %>
+    </div>
+<% end %>
