@@ -25,8 +25,8 @@ class BatchesController < ApplicationController
   # GET /batches/new.json
   def new
     @batch = Batch.new
-    @quantities = @batch.quantities.build
-    @products = @quantities.build_product
+    # @quantities = @batch.quantities.build
+    @products = @batch.products.build
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @batch }
@@ -36,11 +36,7 @@ class BatchesController < ApplicationController
   # GET /batches/1/edit
   def edit
     @batch = Batch.find(params[:id])
-    @product = @batch.quantities.build.build_product
-  end
-
-  def batch_params
-    params.require(:batch).permit(:id, quantities_attributes: [:id, :quantity], product_attributes: [:id, :sku ] )
+    # @product = @batch.quantities.build.build_product
   end
 
   # POST /batches
@@ -51,7 +47,7 @@ class BatchesController < ApplicationController
     respond_to do |format|
       if @batch.save
         @pb = Quantity.find_by_batch_id(@batch.id)
-        format.html { redirect_to edit_quantity_path(@pb), notice: 'Batch was successfully created.' }
+        format.html { redirect_to batches_path(), notice: 'Batch was successfully created.' }
         format.json { render json: @batch, status: :created, location: @batch }
       else
         format.html { render action: "new" }
@@ -66,9 +62,9 @@ class BatchesController < ApplicationController
     puts "update"
     @batch = Batch.find(params[:id])
     respond_to do |format|
-      if @batch.update_attributes(params[:batch])
-        @pb = Quantity.find_by_batch_id(@batch.id)
-        format.html { redirect_to edit_quantity_path(@batch.id), notice: 'Batch was successfully updated.' }
+      if @batch.update_attributes(batch_params)
+        # @pb = Quantity.find_by_batch_id(@batch.id)
+        format.html { redirect_to batches_path, notice: 'Batch was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -88,4 +84,9 @@ class BatchesController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  private 
+    def batch_params
+      params.require(:batch).permit(:id, :name, :due_date, :description, :order_date,:arrival_date, products_attributes: [:id, :sku, :quantities, :description ] )
+    end
 end
