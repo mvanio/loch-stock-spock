@@ -28,10 +28,26 @@
 <p>
   <b>Products:</b>
   <p>
-    <% @batch.quantities.each do |q| %>
-        <%= q.product %> : <%= q.quantity %>
-        <br>
-    <% end %>
+    <table>
+      <tr>
+        <th>Sku</th>
+        <th>Quantity</th>
+        <th>Description</th>
+      </tr>
+      <% @batch.products.each do |q| %>
+        <tr>
+          <td>
+            <%=q.sku%>
+          </td>
+          <td>
+            &nbsp;<%=q.quantities%>
+          </td>
+          <td>
+            <%=q.description%>
+          </td>
+        </tr>
+      <% end %>
+    </table>
   </p>
 </p>
 

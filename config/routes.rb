@@ -1,7 +1,9 @@
 LochStockSpock::Application.routes.draw do
-  resources :products
-  resources :batches
-  resources :quantities
+  
+  resources :batches do 
+    resources :products
+  end
+  # resources :quantities
 
 
   # The priority is based upon order of creation:
@@ -53,7 +55,7 @@ LochStockSpock::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  # root :to => 'welcome#index'
+  root :to => 'batches#index'
 
   # See how all your routes lay out with "rake routes"
 

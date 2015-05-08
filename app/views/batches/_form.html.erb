@@ -1,4 +1,4 @@
-<%= form_for(@batch) do |f| %>
+<%= nested_form_for(@batch) do |f| %>
   <% if @batch.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@batch.errors.count, "error") %> prohibited this batch from being saved:</h2>
@@ -32,20 +32,18 @@
     <%= f.date_select :arrival_date %>
   </div>
 
-
-    <div>
-      <%= f.fields_for :product do |prod_form| %>
-
-          <%= prod_form.fields_for :quantity do |qty_form|%>
-              <% Product.all.each do |prod| %>
-
-                  <%= check_box_tag :product_ids, prod.id, @batch.products.include?(prod), :name => 'batch[product_ids][]' %>
-                  <%= label_tag :product_ids, prod %>
-                  <%= prod_form.text_field :quantity %>
-              <% end %>
-          <% end %>
-      <% end %>
-    </div>
+  <h2>-----------------------------</h2>
+  <h2>Add New Products To On This Batch</h2>
+  <%= f.fields_for :products do |task_form| %>
+    <%= task_form.label :sku %><br />
+    <%= task_form.text_field :sku %><br />
+    <%= task_form.label :quantities %><br />
+    <%= task_form.number_field :quantities %><br />
+    <%= task_form.label :description %><br />
+    <%= task_form.text_field :description %><br />
+    <%= task_form.link_to_remove "Remove this product" %>
+  <% end %>
+  <p><%= f.link_to_add "Add a product", :products %></p>
 
 
 
@@ -54,8 +52,6 @@
     </div>
     <% end %>
 
-  <h2>-----------------------------</h2>
-  <h2>Products Included in This Batch</h2>
 
 
 
