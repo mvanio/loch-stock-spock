@@ -26,7 +26,7 @@ class BatchesController < ApplicationController
   def new
     @batch = Batch.new
     # @quantities = @batch.quantities.build
-    @products = @batch.products.build
+    @batch_products = @batch.batch_products.build
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @batch }
@@ -46,7 +46,7 @@ class BatchesController < ApplicationController
     @batch = Batch.new(batch_params)
     respond_to do |format|
       if @batch.save
-        @pb = Quantity.find_by_batch_id(@batch.id)
+        # @pb = Quantity.find_by_batch_id(@batch.id)
         format.html { redirect_to batches_path(), notice: 'Batch was successfully created.' }
         format.json { render json: @batch, status: :created, location: @batch }
       else
@@ -87,6 +87,6 @@ class BatchesController < ApplicationController
 
   private 
     def batch_params
-      params.require(:batch).permit(:id, :name, :due_date, :description, :order_date,:arrival_date, products_attributes: [:id, :sku, :quantities, :description ] )
+      params.require(:batch).permit(:id, :name, :due_date, :description, :order_date,:arrival_date, :product_ids=>[] )
     end
 end
