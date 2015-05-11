@@ -34,16 +34,17 @@
         <th>Quantity</th>
         <th>Description</th>
       </tr>
-      <% @batch.products.each do |q| %>
+      <% @batch.batch_products.each do |bp| %>
         <tr>
+          <% p = bp.product%>
           <td>
-            <%=q.sku%>
+            <%=p.sku%>
           </td>
           <td>
-            &nbsp;<%=q.quantities%>
+            &nbsp;<%=bp.quantity.p_quantity%>
           </td>
           <td>
-            <%=q.description%>
+            <%=p.description%>
           </td>
         </tr>
       <% end %>

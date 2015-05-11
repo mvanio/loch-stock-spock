@@ -9,8 +9,7 @@
       <% end %>
       </ul>
     </div>
-  <% end %>
-
+  <% end %>  
   <div class="field">
     <%= f.label :name %><br />
     <%= f.text_field :name %>
@@ -35,10 +34,35 @@
   <h2>-----------------------------</h2>
   <h2>Add New Products To On This Batch</h2>
   <%product_ids = @batch.products.map(&:id) %>
-  <% for product in Product.all %>
+  <% Product.all.each_with_index do |product,index| %>
     <div>
-      <%= check_box_tag "batch[product_ids][]", product.id,(product_ids.include?(product.id) ? true : false) %> &nbsp;&nbsp;
+      <%= check_box_tag "batch[batch_products_attributes][#{index}][product_id]", product.id,(product_ids.include?(product.id) ? true : false) ,:class=>"product" %> &nbsp;&nbsp;
       <%= product.sku %>
+      <% if product_ids.include?(product.id) %>
+        <div><%#debugger%>
+          <% ba = @batch_products.find_by_product_id(product.id)%>
+          <%= f.fields_for :batch_products,ba do |p| %>
+            <%= p.fields_for :quantity, ba.quantity do |q| %>
+              <label for="quantity">Quantity</label>
+              <br />
+              <%= q.number_field :p_quantity %>
+              <%#= q.hidden_field :batch_product_id %>
+              <%#= number_field_tag("batch[batch_products][quantity_attributes][#{index}][p_quantity]") %>
+            <% end %>
+          <%end %>
+        </div>
+      <% else %>
+        <div style="display:none;">
+          <%= f.fields_for :batch_products, @batch_products do |p| %>
+            <%= p.fields_for :quantity do |q| %>
+              <label for="quantity">Quantity</label>
+              <br />
+              <%= q.number_field :p_quantity %>
+              <%#= q.hidden_field :batch_product_id, :value =>BatchProduct.maximum(:id).to_i.next %>
+            <% end %>
+          <%end %>
+        </div>
+      <% end %>
     </div>
   <% end %>
 
@@ -46,7 +70,10 @@
     <%= f.submit %>
   </div>
 <% end %>
-
-
-
-
+<script>
+  $(document).ready(function(){
+    $(".product").click(function(){
+      $(this).next().toggle("slow");
+    });
+  });
+</script>
