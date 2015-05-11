@@ -27,6 +27,7 @@ class BatchesController < ApplicationController
     @batch = Batch.new
     # @quantities = @batch.quantities.build
     @batch_products = @batch.batch_products.build
+    @batch_products.build_quantity
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @batch }
@@ -36,6 +37,8 @@ class BatchesController < ApplicationController
   # GET /batches/1/edit
   def edit
     @batch = Batch.find(params[:id])
+    @batch_products = @batch.batch_products
+    
     # @product = @batch.quantities.build.build_product
   end
 
@@ -62,6 +65,7 @@ class BatchesController < ApplicationController
     puts "update"
     @batch = Batch.find(params[:id])
     respond_to do |format|
+      # debugger
       if @batch.update_attributes(batch_params)
         # @pb = Quantity.find_by_batch_id(@batch.id)
         format.html { redirect_to batches_path, notice: 'Batch was successfully updated.' }
@@ -87,6 +91,6 @@ class BatchesController < ApplicationController
 
   private 
     def batch_params
-      params.require(:batch).permit(:id, :name, :due_date, :description, :order_date,:arrival_date, :product_ids=>[] )
+      params.require(:batch).permit(:id, :name, :due_date, :description, :order_date,:arrival_date, :product_ids=>[],batch_products_attributes: [:id,:product_id, quantity_attributes: [:p_quantity,:id, :batch_product_id]] )
     end
 end
