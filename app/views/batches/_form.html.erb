@@ -42,7 +42,7 @@
         <div><%#debugger%>
           <% ba = @batch_products.find_by_product_id(product.id)%>
           <%= f.fields_for :batch_products,ba do |p| %>
-            <%= p.fields_for :quantity, ba.quantity do |q| %>
+            <%= p.fields_for :quantity, (ba.quantity ? ba.quantity : ba.build_quantity) do |q| %>
               <label for="quantity">Quantity</label>
               <br />
               <%= q.number_field :p_quantity %>
